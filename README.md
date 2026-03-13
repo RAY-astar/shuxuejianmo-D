@@ -58,7 +58,7 @@ source("Main_STR_Analysis.R")
 # 运行完整的自动化分析流水线
 # 系统将自动读取 Excel 文件、处理数据、生成可视化图表并导出 Word 报告。
 final_results <- safe_run_complete_analysis()
-📁 输出结构
+## 📁 输出结构
 成功运行后，系统会在当前路径生成一个内容丰富的 STR_Analysis_Output/ 目录：
 STR_Analysis_Output/
 ├── Plots/                              # 包含 15+ 高清可视化图表的目录
@@ -69,7 +69,7 @@ STR_Analysis_Output/
 ├── STR_Analysis_Report.docx            # 最终自动生成的法医分析 Word 报告
 ├── STR_Analysis_Results.RData          # 保存的 R 运行环境数据，便于结果复现
 └── 文件清单.csv                        # 所有生成文件的详细清单
-🏆 致谢与背景
+## 🏆 致谢与背景
 本项目最初基于全国大学生数学建模竞赛开发（荣获二等奖）。此后经过了底层数学逻辑的大幅度重构与升级，核心聚焦于算法鲁棒性与软件工程最佳实践。
 
 由 张弛 (Chi Zhang) 开发与维护。
