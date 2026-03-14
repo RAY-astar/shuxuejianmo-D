@@ -1,10 +1,5 @@
 # 🧬 Forensic-STR-Analyzer: 高阶法医物证多人身份推断系统
 
-![R Version](https://img.shields.io/badge/R-4.2+-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)
-![Status](https://img.shields.io/badge/Status-Academic_&_Engineering_Ready-orange.svg)
-
 一个自动化、高鲁棒性且经过深度优化的计算流水线，专为解析复杂的多人混合短串联重复序列 (STR) DNA 图谱而设计。本项目将严谨的统计学理论与稳健的软件工程实践相结合，致力于解决法医科学中的多人混合身份推断难题。
 
 ## 📌 项目概述
@@ -20,15 +15,19 @@
 不同于传统的基于简单启发式规则的工具，本系统实现并落地了严谨的学术级数学框架：
 
 ### 1. 鲁棒基线校正 (LOWESS)
+
 摒弃了简单的移动平均法，采用**局部加权散点平滑 (LOWESS)** 回归来估计并扣除基线漂移。结合自适应分位数阈值法，在保留 **85% 真实等位基因信号**的同时，实现了高达 **80.5% 的噪声去除率**。
 
 ### 2. 结合 Huber 损失与 L2 正则化的鲁棒 EM 算法
+
 用于求解高斯混合模型 (GMM) 的标准 EM 算法对生物学异常峰（如口吃峰、伪影）极其敏感。我们重构了优化目标函数：
+
 * **Huber 损失 (M-估计器):** 应用于残差似然计算，对异常峰施加线性而非平方惩罚，防止混合比例估计发生严重偏移。
 * **L2 正则化 ($L_2$ Penalty):** 对混合权重 ($\theta$) 施加收缩惩罚，防止在高度复杂的基因座中发生模型过拟合。
 * **求解器:** 通过 `L-BFGS-B` 算法进行高效全局/局部搜索优化。
 
 ### 3. 基于 MAP (最大后验概率) 的基因型推断
+
 从确定性的贪心匹配策略跃升为**概率驱动的 MAP 推断框架**。算法基于预期的荧光强度计算每个峰属于特定贡献者的“适应度似然 (Fitness Likelihood)”，即使在高度降解的样本中也能提供高精度的基因型重建。
 
 ---
@@ -47,19 +46,33 @@
 ## 🚀 快速开始
 
 ### 环境依赖
+
 请确保已安装 R (>= 4.2.0)。脚本在运行时会自动检测并安装缺失的依赖项，您也可以手动预安装核心库：
-```R
+
+```r
 install.packages(c("tidyverse", "readxl", "mixtools", "ggplot2", "officer", "flextable", "MASS"))
-运行指南
+
+```
+
+### 运行指南
+
 只需将您的原始 STR 图谱数据 (Excel 文件) 放置在 R 的工作目录中，然后运行主脚本即可。系统会接管后续的所有工作。
+
+```r
 # 加载主算法脚本 (请确保文件名与您的实际文件名一致)
 source("Main_STR_Analysis.R")
 
 # 运行完整的自动化分析流水线
 # 系统将自动读取 Excel 文件、处理数据、生成可视化图表并导出 Word 报告。
 final_results <- safe_run_complete_analysis()
+
+```
+
 ## 📁 输出结构
-成功运行后，系统会在当前路径生成一个内容丰富的 STR_Analysis_Output/ 目录：
+
+成功运行后，系统会在当前路径生成一个内容丰富的 `STR_Analysis_Output/` 目录：
+
+```text
 STR_Analysis_Output/
 ├── Plots/                              # 包含 15+ 高清可视化图表的目录
 │   ├── 01_原始图谱_*.png               # 原始 STR 图谱
@@ -69,7 +82,11 @@ STR_Analysis_Output/
 ├── STR_Analysis_Report.docx            # 最终自动生成的法医分析 Word 报告
 ├── STR_Analysis_Results.RData          # 保存的 R 运行环境数据，便于结果复现
 └── 文件清单.csv                        # 所有生成文件的详细清单
+
+```
+
 ## 🏆 致谢与背景
-本项目最初基于全国大学生数学建模竞赛开发（荣获二等奖）。此后经过了底层数学逻辑的大幅度重构与升级，核心聚焦于算法鲁棒性与软件工程最佳实践。
+
+本项目最初基于全国大学生数学建模竞赛二等奖。此后经过了底层数学逻辑的升级，优化了相应的算法。
 
 由 张弛 (Chi Zhang) 开发与维护。
